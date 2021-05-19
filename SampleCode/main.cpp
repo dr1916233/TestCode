@@ -2,15 +2,6 @@
 #include <DxLib.h>
 #include "main.h"
 
-using namespace std;
-
-struct Sample
-{
-	char c;
-
-	short w;
-};
-
 struct Vector2{
 	float x, y;
 };
@@ -30,11 +21,11 @@ struct Rect{
 	}
 
 	float Top()const {
-		return center.y - w;
+		return center.y - h;
 	}
 
 	float Buttom()const {
-		return center.y + w;
+		return center.y + h;
 	}
 };
 
@@ -47,13 +38,33 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	SetWindowText(L"1916233_èoâ∆ó«ëæ");
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	Rect rc = { 200,200,50,100 };
+	Rect rc = { {200,200},50,100 };
 
 	while (ProcessMessage() == 0 && !CheckHitKey(KEY_INPUT_ESCAPE))
 	{
 		ClsDrawScreen();
 
-		DrawBox(rc.Left(), rc.Top(), rc.Right(), rc.Left(), 0xffffff, true);
+		constexpr float speed = 4.0f;
+
+		// à⁄ìÆ
+		if (CheckHitKey(KEY_INPUT_LEFT))
+		{
+			rc.center.x -= speed;
+		}
+		if (CheckHitKey(KEY_INPUT_RIGHT))
+		{
+			rc.center.x += speed;
+		}
+		if (CheckHitKey(KEY_INPUT_UP))
+		{
+			rc.center.y -= speed;
+		}
+		if (CheckHitKey(KEY_INPUT_DOWN))
+		{
+			rc.center.y += speed;
+		}
+
+		DrawBox(rc.Left(), rc.Top(), rc.Right(), rc.Buttom(), 0xffffff, true);
 
 		ScreenFlip();
 	}
